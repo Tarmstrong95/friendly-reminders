@@ -15,7 +15,9 @@ import {
     EDIT_SUCCESS,
     LOGOUT_START,
     LOGOUT_SUCCESS,
-    LOGOUT_FAIL
+    LOGOUT_FAIL,
+    EDIT_FAIL,
+    RESET_EDIT
 
 } from '../Actions';
 
@@ -23,6 +25,8 @@ const initialState = {
     addingEvent: false,
     addingData: false,
     editingEvent: false,
+    editingEventSuccess: false,
+    editingEventFail: false,
     events: [
         {
             event: 'Toms Birthday',
@@ -107,8 +111,23 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 editingEvent: false,
                 error: '',
+                editingEventSuccess: true,
                 events: action.payload
             };
+        case EDIT_FAIL:
+            return {
+                ...state,
+                editingEvent: false,
+                editingEventFail: true,
+                error: action.payload
+            }
+            case RESET_EDIT: 
+            return {
+                ...state, 
+                editingEvent: false,
+                editingEventFail: false,
+                editingEventSuccess: false
+            }
 
         case LOGIN_START:
             return ({
