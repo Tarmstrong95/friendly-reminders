@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addEvent } from '../../Actions';
-import { Button, Form, EventForm, Input, Area, Title, Close, CloseBtn, NewSelect} from './styledMain'
+import { Form, Button, Header, Container, Dropdown } from 'semantic-ui-react';
 
 class newEvent extends React.Component {
     state = {
@@ -48,45 +48,47 @@ class newEvent extends React.Component {
 
     render() {
         return (
-            <EventForm>
-                <Close>
-                    <CloseBtn onClick={this.close}>X</CloseBtn>
-                </Close>
-                <Title>
-                    <h4>New Event</h4>
-                </Title>
+            <Container>
+                <div>
+                    <Button onClick={this.close}>X</Button>
+                </div>
+                <div>
+                    <Header as='h4'>New Event</Header>
+                </div>
                 <Form className='form' onSubmit={this.addEvent}>
-                    <NewSelect name = 'type'>
-                        <option value ='all'>All</option>
-                        <option value = 'birthday'>Birthday</option>
-                        <option value = 'wedding'>Wedding</option>
-                        <option value ='anniversary'>Anniversary</option>
-                        <option value = 'holiday'>Holiday</option>
-                        <option value = 'party'>Party</option>
-                    </NewSelect>
-                    <Input
+                    <Dropdown name='type'>
+                        <Dropdown.Menu>
+                            <Dropdown.item text='all'/>
+                            <Dropdown.item text='birthday'/>
+                            <Dropdown.item text='wedding'/>
+                            <Dropdown.item text='anniversary'/>
+                            <Dropdown.item text='holiday'/>
+                            <Dropdown.item text='party'/>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Form.Input
                         type='text'
                         name='event'
                         placeholder='Event'
                     />
-                    <Input
+                    <Form.Input
                         type='text'
                         name='date'
                         placeholder='Date'
                     />
 
-                    <Input
+                    <Form.Input
                         type='text'
                         name='messageDate'
                         placeholder='Send Date'
                     />
-                    <Area
+                    <Form.TextArea
                         type='text'
                         rows='3'
                         name='Description'
                         placeholder='Description'
                     />
-                    <Area
+                    <Form.TextArea
                         type='text'
                         name='message'
                         placeholder='Message'
@@ -94,7 +96,7 @@ class newEvent extends React.Component {
                     />
                     <Button>Add</Button>
                 </Form>
-            </EventForm>
+            </Container>
         )
     }
 }
