@@ -13,7 +13,8 @@ class Main extends React.Component {
     state = {
         deletingEvent: null,
         editingEventId: null,
-        selectType: 'all'
+        selectType: 'All',
+        place: 'plachoeler'
     };
 
     // componentDidMount() {
@@ -31,7 +32,7 @@ class Main extends React.Component {
 
 
     FilteredEvents = (events) => {
-        if (this.state.selectType === 'all') {
+        if (this.state.selectType === 'All') {
             return events
         }
         return events.filter(event => {
@@ -48,9 +49,15 @@ class Main extends React.Component {
 
     }
 
+    handleDropdown = (e, { value }) => this.setState({
+        ...this.state,
+        selectType: `${value ? filters[value].text : 'All'}`
+    })
+
 
 
     render() {
+        const { selectType, place } = this.state
         return (
             <Container textAlign='center'>
                 <Header as='h1'>
@@ -61,20 +68,20 @@ class Main extends React.Component {
                 </Header>
                 <Route path='/protected/new-event' component={newEvent} />
                 <Menu vertical>
-                    <Dropdown item text='Select Type'>
-                        <Dropdown.Menu name='selectType' onChange={this.onChange} value={this.state.selectType}>
-                            <Dropdown.Item text='all'>All</Dropdown.Item>
-                            <Dropdown.Item text='birthday'>Birthday</Dropdown.Item>
-                            <Dropdown.Item text='wedding'>Wedding</Dropdown.Item>
-                            <Dropdown.Item text='anniversary'>Anniversary</Dropdown.Item>
-                            <Dropdown.Item text='holiday'>Holiday</Dropdown.Item>
-                            <Dropdown.Item text='party'>Party</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    <Dropdown
+                        clearable
+                        item
+                        name='type'
+                        placeholder={place}
+                        selection
+                        options={filters}
+                        onChange={this.handleDropdown}
+                        value={selectType}
+                    />
                 </Menu>
-                <Card.Group itemsPerRow={4}>
+                <Card.Group itemsPerRow={4} className='baseline'>
                     {this.FilteredEvents(this.props.events).length === 0 &&
-                        <Message error content={`There are no upcoming ${this.state.selectType}.charAt(0).toUpperCase()  ${this.state.selectType}.slice(1)}s`} />
+                        <Message error content={`There are no upcoming ${this.state.selectType}s`} />
                     }
 
                     {this.FilteredEvents(this.props.events).map(event => {
@@ -95,7 +102,7 @@ class Main extends React.Component {
                                     <Card.Header>{event.event}</Card.Header>
                                     <Card.Meta>{event.date}</Card.Meta>
                                     <Divider />
-                                    <Card.Description>{event.description}</Card.Description>
+                                    <Card.Description>{event.type}</Card.Description>
                                     <Card.Meta>{event.messageDate}</Card.Meta>
                                     <Card.Description>{event.message}</Card.Description>
                                 </Card.Content>
@@ -133,3 +140,37 @@ export default connect(
     mapStateToProps,
     { deleteEvent, getData }
 )(Main);
+
+
+const filters = [
+    {
+        key: 0,
+        value: 0,
+        text: 'All'
+    },
+    {
+        key: 1,
+        value: 1,
+        text: 'Birthday'
+    },
+    {
+        key: 2,
+        value: 2,
+        text: 'Wedding'
+    },
+    {
+        key: 3,
+        value: 3,
+        text: 'Anniversary'
+    },
+    {
+        key: 4,
+        value: 4,
+        text: 'Holiday'
+    },
+    {
+        key: 5,
+        value: 5,
+        text: 'Party'
+    },
+]
