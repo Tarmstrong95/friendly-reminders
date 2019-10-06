@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { deleteEvent, editEvent, getData, saveEdit } from '../../Actions';
 
 import EditForm from './EditForm';
-import { Header, Container, Dropdown, Card, Message, Icon, Menu, Divider } from 'semantic-ui-react';
+import { Header, Container, Dropdown, Card, Message, Icon, Menu, Divider, Segment, Label } from 'semantic-ui-react';
 
 
 class Main extends React.Component {
@@ -14,7 +14,6 @@ class Main extends React.Component {
         deletingEvent: null,
         editingEventId: null,
         selectType: 'All',
-        place: 'plachoeler'
     };
 
     // componentDidMount() {
@@ -57,9 +56,9 @@ class Main extends React.Component {
 
 
     render() {
-        const { selectType, place } = this.state
+        const { selectType } = this.state
         return (
-            <Container textAlign='center'>
+            <Container >
                 <Header as='h1'>
                     Events
                     <div className='newButton'>
@@ -67,18 +66,20 @@ class Main extends React.Component {
                     </div>
                 </Header>
                 <Route path='/protected/new-event' component={newEvent} />
-                <Menu vertical>
+                <span>
                     <Dropdown
-                        clearable
-                        item
+                        floating
+                        icon='filter'
+                        compact
+                        className='icon'
                         name='type'
-                        placeholder={place}
-                        selection
+                        text={selectType}
                         options={filters}
                         onChange={this.handleDropdown}
                         value={selectType}
                     />
-                </Menu>
+                </span>
+                <Divider />
                 <Card.Group itemsPerRow={4} className='baseline'>
                     {this.FilteredEvents(this.props.events).length === 0 &&
                         <Message error content={`There are no upcoming ${this.state.selectType}s`} />
@@ -97,8 +98,17 @@ class Main extends React.Component {
                         }
 
                         return (
+
                             <Card>
                                 <Card.Content>
+                                    <Label attached='top' color={
+                                        event.type ===
+                                            'Birthday' ? 'red' :
+                                            event.type === 'Wedding' ? 'pink' :
+                                                event.type === 'Anniversary' ? 'violet' :
+                                                    event.type === 'Holiday' ? 'blue' :
+                                                        'olive'
+                                    } />
                                     <Card.Header>{event.event}</Card.Header>
                                     <Card.Meta>{event.date}</Card.Meta>
                                     <Divider />
@@ -117,7 +127,9 @@ class Main extends React.Component {
                                         onClick={() => this.deleteEvent(event.id)}
                                     />
                                 </Card.Content>
+
                             </Card>
+
                         )
                     })}
 
