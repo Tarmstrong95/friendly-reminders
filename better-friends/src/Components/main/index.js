@@ -1,12 +1,11 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
-import newEvent from './newEvent';
+import NewEvent from './newEvent';
 import { connect } from 'react-redux';
 
 import { deleteEvent, editEvent, getData, saveEdit } from '../../Actions';
 
 import EditForm from './EditForm';
-import { Header, Container, Dropdown, Card, Message, Icon, Menu, Divider, Segment, Label } from 'semantic-ui-react';
+import { Header, Container, Dropdown, Card, Message, Icon, Divider, Label, Button, Modal, Form, Input } from 'semantic-ui-react';
 
 
 class Main extends React.Component {
@@ -55,17 +54,15 @@ class Main extends React.Component {
 
 
 
+
     render() {
         const { selectType } = this.state
         return (
             <Container >
                 <Header as='h1'>
                     Events
-                    <div className='newButton'>
-                        <Link className="add-event-link" to='/protected/new-event'> Add Event </Link>
-                    </div>
+                    <NewEvent/>
                 </Header>
-                <Route path='/protected/new-event' component={newEvent} />
                 <span>
                     <Dropdown
                         floating
@@ -154,7 +151,7 @@ export default connect(
 )(Main);
 
 
-const filters = [
+export const filters = [
     {
         key: 0,
         value: 0,
