@@ -44,6 +44,14 @@ class EditForm extends React.Component {
         return (
             <Card>
                 <Card.Content textAlign='left'>
+                    <Label attached='top' color={
+                        event.type ===
+                            'Birthday' ? 'red' :
+                            event.type === 'Wedding' ? 'pink' :
+                                event.type === 'Anniversary' ? 'violet' :
+                                    event.type === 'Holiday' ? 'blue' :
+                                        'grey'
+                    } />
                     <Form>
                         <Card.Header>
                             <Input
