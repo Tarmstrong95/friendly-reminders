@@ -15,7 +15,9 @@ import {
     EDIT_SUCCESS,
     LOGOUT_START,
     LOGOUT_SUCCESS,
-    LOGOUT_FAIL
+    LOGOUT_FAIL,
+    EDIT_FAIL,
+    RESET_EDIT
 
 } from '../Actions';
 
@@ -23,43 +25,105 @@ const initialState = {
     addingEvent: false,
     addingData: false,
     editingEvent: false,
+    editingEventSuccess: false,
+    editingEventFail: false,
     events: [
         {
             event: 'Toms Birthday',
             date: '01/20/94',
-            description: 'Birthday party',
+            type: 'Birthday',
             messageDate: '01/19/19',
             message: 'Happy Birthday',
             id: 1,
-            type: 'birthday'
         },
         {
             event: 'Test Wedding',
             date: 'testdate2',
-            description: 'testdesc2',
+            type: 'Wedding',
             messageDate: 'testmsgdate2',
             message: 'testmsg2',
             id: 2,
-            type: 'wedding',
         },
         {
             event: 'Test Holiday',
             date: 'testdate2',
-            description: 'testdesc2',
+            type: 'Anniversary',
             messageDate: 'testmsgdate2',
             message: 'testmsg2',
             id: 3,
-            type: 'holiday',
         },
         {
             event: 'Test Anniversary',
             date: 'testdate2',
-            description: 'testdesc2',
+            type: 'Holiday',
             messageDate: 'testmsgdate2',
             message: 'testmsg2',
             id: 4,
-            type: 'anniversary',
-        }
+        },
+        {
+            event: 'Toms Birthday',
+            date: '01/20/94',
+            type: 'Birthday',
+            messageDate: '01/19/19',
+            message: 'Happy Birthday',
+            id: 5,
+        },
+        {
+            event: 'Test Wedding',
+            date: 'testdate2',
+            type: 'Wedding',
+            messageDate: 'testmsgdate2',
+            message: 'testmsg2',
+            id: 6,
+        },
+        {
+            event: 'Test Holiday',
+            date: 'testdate2',
+            type: 'Anniversary',
+            messageDate: 'testmsgdate2',
+            message: 'testmsg2',
+            id: 7,
+        },
+        {
+            event: 'Test Anniversary',
+            date: 'testdate2',
+            type: 'Holiday',
+            messageDate: 'testmsgdate2',
+            message: 'testmsg2',
+            id: 8,
+        },
+        {
+            event: 'Toms Birthday',
+            date: '01/20/94',
+            type: 'Birthday',
+            messageDate: '01/19/19',
+            message: 'Happy Birthday',
+            id: 9,
+        },
+        {
+            event: 'Test Wedding',
+            date: 'testdate2',
+            type: 'Wedding',
+            messageDate: 'testmsgdate2',
+            message: 'testmsg2',
+            id: 10,
+        },
+        {
+            event: 'Test Holiday',
+            date: 'testdate2',
+            type: 'Anniversary',
+            messageDate: 'testmsgdate2',
+            message: 'testmsg2',
+            id: 11,
+        },
+        {
+            event: 'Test Anniversary',
+            date: 'testdate2',
+            type: 'Holiday',
+            messageDate: 'testmsgdate2',
+            message: 'testmsg2',
+            id: 12,
+        },
     ],
     error: '',
     loggingIn: false,
@@ -107,8 +171,23 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 editingEvent: false,
                 error: '',
+                editingEventSuccess: true,
                 events: action.payload
             };
+        case EDIT_FAIL:
+            return {
+                ...state,
+                editingEvent: false,
+                editingEventFail: true,
+                error: action.payload
+            }
+            case RESET_EDIT: 
+            return {
+                ...state, 
+                editingEvent: false,
+                editingEventFail: false,
+                editingEventSuccess: false
+            }
 
         case LOGIN_START:
             return ({

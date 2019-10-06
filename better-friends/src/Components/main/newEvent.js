@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addEvent } from '../../Actions';
-import { Button, Form, EventForm, Input, Area, Title, Close, CloseBtn, NewSelect} from './styledMain'
+import { Form, Button, Header, Container, Dropdown, Modal, Label, Input, TextArea } from 'semantic-ui-react';
+import { filters as options } from './index'
+import DatePicker from 'react-date-picker';
 
-class newEvent extends React.Component {
+class NewEvent extends React.Component {
     state = {
-        new: {
-            event: '',
-            date: '',
-            description: '',
-            messageDate: '',
-            message: '',
-            type: ''
-        }
-    };
+        event: '',
+        date: '',
+        description: '',
+        messageDate: '',
+        message: '',
+        type: 'Select a type'
+    }
 
     handleChanges = e => {
         let value = e.target.value;
@@ -25,15 +25,12 @@ class newEvent extends React.Component {
         });
     };
 
-    close = () => {
-        this.props.history.push('/protected')
-    }
+    handleDropdown = (e, { value }) => this.setState({ ...this.state, type: `${options[value].text}` })
+    onChange = date => this.setState({ ...this.state, messageDate: date })
 
     addEvent = e => {
         e.preventDefault();
-        this.props.addEvent(this.state.new).then(() => {
-            this.props.history.push('/protected')
-        });
+        this.props.addEvent(this.state)
         this.setState({
             new: {
                 event: '',
@@ -46,59 +43,70 @@ class newEvent extends React.Component {
     };
 
 
+
     render() {
         return (
-            <EventForm>
-                <Close>
-                    <CloseBtn onClick={this.close}>X</CloseBtn>
-                </Close>
-                <Title>
-                    <h4>New Event</h4>
-                </Title>
-                <Form className='form' onSubmit={this.addEvent}>
-                    <NewSelect name = 'type'>
-                        <option value ='all'>All</option>
-                        <option value = 'birthday'>Birthday</option>
-                        <option value = 'wedding'>Wedding</option>
-                        <option value ='anniversary'>Anniversary</option>
-                        <option value = 'holiday'>Holiday</option>
-                        <option value = 'party'>Party</option>
-                    </NewSelect>
-                    <Input
-                        type='text'
-                        name='event'
-                        placeholder='Event'
-                    />
-                    <Input
-                        type='text'
-                        name='date'
-                        placeholder='Date'
-                    />
+            <div>
+                <Modal
+                    size='mini'
+                    closeIcon
+                    trigger={<Button
+                        content='Add Event'
+                        icon='plus'
+                        size='mini'
+                        onClick={this.showAdd}
+                    />}>
+                    <Modal.Header>Add an event</Modal.Header>
+                    <Modal.Content>
+                        <Form>
 
-                    <Input
-                        type='text'
-                        name='messageDate'
-                        placeholder='Send Date'
-                    />
-                    <Area
-                        type='text'
-                        rows='3'
-                        name='Description'
-                        placeholder='Description'
-                    />
-                    <Area
-                        type='text'
-                        name='message'
-                        placeholder='Message'
-                        rows='3'
-                    />
-                    <Button>Add</Button>
-                </Form>
-            </EventForm>
+                            <Form.Field>
+                                <Label size='tiny'>What would you like to title this event?</Label>
+                                <Input name='event' placeholder='Title' />
+                            </Form.Field>
+
+                            <Form.Field>
+                                <Label size='tiny'>When is the event date?</Label>
+                                <Input name='date' placeholder='Event Date' />
+                            </Form.Field>
+
+                            <Form.Field>
+                                <Label size='tiny'>What type of event is this?</Label>
+                                <div>
+                                    <Dropdown
+                                        text={this.state.type}
+                                        options={options}
+                                        scrolling
+                                        onChange={this.handleDropdown}
+                                    />
+                                </div>
+                            </Form.Field>
+
+                            <Form.Field>
+                                <Label size='tiny'>When would you like the message to be sent?</Label>
+                                <div>
+                                    <DatePicker onChange={this.onChange} value={this.state.messageDate} 
+                                    
+                                    />
+                                </div>
+
+                            </Form.Field>
+
+                            <Form.Field>
+                                <Label size='tiny'>Say something nice!</Label>
+                                <TextArea name='message' placeholder='Message' />
+                            </Form.Field>
+
+                            <Button content='Save' onClick={this.addEvent} />
+
+                        </Form>
+                    </Modal.Content>
+                </Modal>
+            </div>
         )
     }
 }
 
 
 
-export default connect(null, { addEvent })(newEvent);
+export default connect(null, { addEvent })(NewEvent);

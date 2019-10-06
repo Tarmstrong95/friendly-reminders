@@ -2,24 +2,28 @@
   text-align: center;
   
 }
-.main-nav{
-display: flex;
-flex-direction: row-reverse;
-background:#3f3d56;
 
-}
-.main-nav-link {
-  color: white;
-  margin-left: 10px;
-  padding: 10px 5px;
-  text-decoration: none;
-  /* font-weight: bold; */
+.noborder {
+  border: none !important;
 }
 
-.add-event-link {
-  color: black;
-  margin-left: 10px;
-  padding: 10px 5px;
-  text-decoration: none;
-  font-weight: bold;
+/* semantic ui styles */
+.ui.baseline{
+  align-items: baseline !important;
+}
+
+/* date picker styles */
+.react-date-picker__wrapper{
+  border: none !important;
+}
+.ui.form input:not([type]), .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=email], .ui.form input[type=file], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=search], .ui.form input[type=tel], .ui.form input[type=text], .ui.form input[type=time], .ui.form input[type=url]{
+  padding: 2px !important;
+}
+.react-date-picker__inputGroup__input{
+  min-width: 2rem !important;
+}
+.ui.form input:not([type]), .ui.form input[type=date], .ui.form input[type=datetime-local], .ui.form input[type=email], .ui.form input[type=file], .ui.form input[type=number], .ui.form input[type=password], .ui.form input[type=search], .ui.form input[type=tel], .ui.form input[type=text], .ui.form input[type=time], .ui.form input[type=url]{
+  border: none !important;
+  border-bottom: 1px solid rgba(34,36,38,.15) !important;
+  border-radius: 0 !important;
 }

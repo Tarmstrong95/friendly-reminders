@@ -1,22 +1,25 @@
 import React from 'react';
-import { NavLink, Route } from 'react-router-dom';
 import Login from './login';
 import Register from './register';
-import './loginStyles.css'
-import {NavWrapper, LoginCont} from './styledComponents'
+import { Segment, Grid, Divider, Header } from 'semantic-ui-react';
 
 const Container = props => {
 
     return (
-        
-        <LoginCont>
-            <NavWrapper>
-                <NavLink className='link' to='/cred/login' >Login</NavLink>{' '}
-                <NavLink className='link' to='/cred/register' >Register</NavLink>
-            </NavWrapper>
-            <Route path='/cred/login' component={Login} />
-            <Route path='/cred/register' component={Register} />
-        </LoginCont> 
+
+        <Segment className='noborder'>
+            <Grid columns={2} relaxed='very'>
+                <Grid.Column>
+                    <Header as='h1'>Login</Header>
+                    <Login />
+                </Grid.Column>
+                <Grid.Column>
+                <Header as='h1'>Register</Header>
+                    <Register />
+                </Grid.Column>
+            </Grid>
+            <Divider vertical>OR</Divider>
+        </Segment>
     )
 }
 

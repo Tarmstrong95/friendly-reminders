@@ -39,6 +39,7 @@ export const addEvent = event => dispatch => {
 export const EDIT_START = 'EDIT_START';
 export const EDIT_SUCCESS = 'EDIT_SUCCESS';
 export const EDIT_FAIL = 'EDIT_FAIL';
+export const RESET_EDIT = 'RESET_EDIT';
 
 export const editEvent = event => dispatch => {
     dispatch({ type: EDIT_START })
@@ -51,6 +52,10 @@ export const editEvent = event => dispatch => {
             console.log(err.response);
             dispatch({ type: ADD_FAIL, payload: err.response });
         });
+}
+
+export const resetEdit = () => dispatch => {
+    dispatch({type: RESET_EDIT})
 }
 
 
