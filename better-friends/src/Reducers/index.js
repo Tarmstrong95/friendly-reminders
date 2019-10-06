@@ -66,7 +66,7 @@ const initialState = {
             type: 'Birthday',
             messageDate: '01/19/19',
             message: 'Happy Birthday',
-            id: 1,
+            id: 5,
         },
         {
             event: 'Test Wedding',
@@ -74,7 +74,7 @@ const initialState = {
             type: 'Wedding',
             messageDate: 'testmsgdate2',
             message: 'testmsg2',
-            id: 2,
+            id: 6,
         },
         {
             event: 'Test Holiday',
@@ -82,7 +82,7 @@ const initialState = {
             type: 'Anniversary',
             messageDate: 'testmsgdate2',
             message: 'testmsg2',
-            id: 3,
+            id: 7,
         },
         {
             event: 'Test Anniversary',
@@ -90,7 +90,7 @@ const initialState = {
             type: 'Holiday',
             messageDate: 'testmsgdate2',
             message: 'testmsg2',
-            id: 4,
+            id: 8,
         },
         {
             event: 'Toms Birthday',
@@ -98,7 +98,7 @@ const initialState = {
             type: 'Birthday',
             messageDate: '01/19/19',
             message: 'Happy Birthday',
-            id: 1,
+            id: 9,
         },
         {
             event: 'Test Wedding',
@@ -106,7 +106,7 @@ const initialState = {
             type: 'Wedding',
             messageDate: 'testmsgdate2',
             message: 'testmsg2',
-            id: 2,
+            id: 10,
         },
         {
             event: 'Test Holiday',
@@ -114,7 +114,7 @@ const initialState = {
             type: 'Anniversary',
             messageDate: 'testmsgdate2',
             message: 'testmsg2',
-            id: 3,
+            id: 11,
         },
         {
             event: 'Test Anniversary',
@@ -122,7 +122,7 @@ const initialState = {
             type: 'Holiday',
             messageDate: 'testmsgdate2',
             message: 'testmsg2',
-            id: 4,
+            id: 12,
         },
     ],
     error: '',
