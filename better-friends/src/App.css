@@ -2,24 +2,7 @@
   text-align: center;
   
 }
-.main-nav{
-display: flex;
-flex-direction: row-reverse;
-background:#3f3d56;
 
-}
-.main-nav-link {
-  color: white;
-  margin-left: 10px;
-  padding: 10px 5px;
-  text-decoration: none;
-  /* font-weight: bold; */
-}
-
-.add-event-link {
-  color: black;
-  margin-left: 10px;
-  padding: 10px 5px;
-  text-decoration: none;
-  font-weight: bold;
+.noborder {
+  border: none !important;
 }
