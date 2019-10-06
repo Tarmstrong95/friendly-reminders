@@ -2,6 +2,7 @@ import React from 'react'
 import { Menu, Input } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { login, logout } from '../../Actions/index'
+import {Link} from 'react-router-dom'
 
 class Navig extends React.Component {
     state = { activeItem: 'home' }
@@ -21,14 +22,17 @@ class Navig extends React.Component {
                     name='home'
                     active={activeItem === 'home'}
                     onClick={this.handleItemClick}
-                />
+                >
+                    <Link to='/'>Home</Link>
+                </Menu.Item>
 
                 {this.props.isLoggedIn && <Menu.Item
                     name='events'
                     active={activeItem === 'events'}
                     onClick={this.handleItemClick}
-                    href='/protected'
-                />}
+                >
+                    <Link to='/protected'>Events</Link>
+                </Menu.Item>}
                 <Menu.Menu position='right'>
                     {this.props.isLoggedIn && <Menu.Item
                         name='logout'
@@ -51,11 +55,3 @@ const mapStateToProps = state => {
     }
 }
 export default connect(mapStateToProps, { login, logout })(Navig);
-
-
-{/* <nav className="main-nav">
-      {props.isLoggedIn && <Link onClick={() => props.logout()} className="main-nav-link" to='/cred/login'> Logout</Link>}
-        {!props.isLoggedIn && <Link className="main-nav-link" to='/cred/login'> Login</Link>}
-        <Link className="main-nav-link" to='/protected'> Events</Link>
-        {props.isLoggedIn && <Link className="main-nav-link" >{localStorage.getItem('firstname')}</Link>}
-      </nav> */}
