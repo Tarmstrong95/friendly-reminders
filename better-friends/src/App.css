@@ -6,3 +6,6 @@
 .noborder {
   border: none !important;
 }
+.ui.baseline{
+  align-items: baseline !important;
+}
