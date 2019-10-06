@@ -1,8 +1,8 @@
 import React from 'react';
-import { Form, Input, Button } from './styledComponents';
 import { login } from '../../Actions/index';
 import {connect} from 'react-redux';
-
+import {Form} from 'semantic-ui-react'
+import history from '../../history/history'
 class Login extends React.Component {
     state = {
         un: '',//username
@@ -22,7 +22,7 @@ class Login extends React.Component {
         if (localStorage.getItem('username') !== '' && localStorage.getItem('password') !== '' && localStorage.getItem('username') === this.state.un && localStorage.getItem('password') === this.state.pw) {
            localStorage.setItem("token", this.props.token)
             this.props.login()
-            this.props.history.push('/protected')
+            history.push('/protected')
         }else{
             alert('INCORRECT CREDENTIALS!')
         }
@@ -35,10 +35,10 @@ class Login extends React.Component {
 
     render() {
         return (
-            <Form onSubmit={this.submit}>
-                <Input name="un" onChange={this.handleChanges} value={this.state.un} placeholder="username" />
-                <Input name="pw" onChange={this.handleChanges} value={this.state.pw} placeholder="password" />
-                <Button>Login</Button>
+            <Form>
+                <Form.Input name="un" onChange={this.handleChanges} value={this.state.un} placeholder="username" />
+                <Form.Input name="pw" onChange={this.handleChanges} value={this.state.pw} placeholder="password" />
+                <Form.Button onClick={this.submit}>Login</Form.Button>
             </Form>
         )
     }
