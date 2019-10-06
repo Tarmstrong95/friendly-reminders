@@ -19,7 +19,7 @@ class EditForm extends React.Component {
     };
     handleDropdown = (e, { value }) => this.setState({
         ...this.state,
-        description: `${value ? eventOptions[value].text : 'Please select a type'}`
+        type: `${value ? eventOptions[value].text : 'Please select a type'}`
     })
 
     editEvent = e => {
@@ -30,17 +30,17 @@ class EditForm extends React.Component {
         this.props.closeEdit();
     }
     componentDidMount = () => {
-        const { event, message, description, date, id, messageDate } = this.state.event
+        const { event, message, type, date, id, messageDate } = this.state.event
         this.setState({
-            event: { event, message, description, date, id, messageDate }
+            event: { event, message, type, date, id, messageDate }
         })
     }
 
 
 
     render() {
-        const { event, message, description, date, id, messageDate, value } = this.state.event
-        const { editingEvent, editingEventFail, editingEventSuccess, closeEdit } = this.props
+        const { event, message, type, date, id, messageDate, value } = this.state.event
+        const { editingEvent, editingEventFail, editingEventSuccess, closeEdit, resetEdit } = this.props
         return (
             <Card>
                 <Card.Content textAlign='left'>
@@ -70,8 +70,8 @@ class EditForm extends React.Component {
                         <Card.Description>
                             <Dropdown
                                 clearable
-                                name='description'
-                                placeholder={description}
+                                name='type'
+                                placeholder={type}
                                 selection
                                 options={eventOptions}
                                 onChange={this.handleDropdown}
@@ -115,14 +115,12 @@ class EditForm extends React.Component {
                     {editingEventSuccess && <Icon
                         name='check circle'
                         color='green'
-                        onClick={() => this.editEvent(this.state.event)}
                     />}
                     {editingEventFail &&
                         !editingEvent
                         && <Icon
                             name='check circle'
                             color='red'
-                            onClick={() => this.editEvent(this.state.event)}
                         />}
                     {editingEvent &&
                         !editingEventFail &&
