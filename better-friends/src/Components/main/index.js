@@ -2,13 +2,11 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import newEvent from './newEvent';
 import { connect } from 'react-redux';
-import { Card, CardContainer, Head, Select, SelectContainer, Error} from './styledMain'
-import './mainStyles.css';
-import '../../App.css';
 
-import { deleteEvent, editEvent, getData } from '../../Actions';
+import { deleteEvent, editEvent, getData, saveEdit } from '../../Actions';
 
 import EditForm from './EditForm';
+import { Header, Container, Dropdown, Card, Message, Icon, Menu, Divider } from 'semantic-ui-react';
 
 
 class Main extends React.Component {
@@ -27,31 +25,25 @@ class Main extends React.Component {
         this.props.deleteEvent(id);
     };
 
-    editEvent = (e, event) => {
-        e.preventDefault();
-        this.props.editEvent(event).then(() => {
-            this.setState({ editingEventId: null });
-        });
-    };
-
-    closeEdit = () =>{
-        this.setState({ editingEventId:''})
+    closeEdit = () => {
+        this.setState({ editingEventId: '' })
     }
 
-    FilteredEvents = (events) =>{
-        if( this.state.selectType ==='all'){
+
+    FilteredEvents = (events) => {
+        if (this.state.selectType === 'all') {
             return events
         }
-         return events.filter(event =>{
+        return events.filter(event => {
             return (event.type === this.state.selectType)
         })
     }
 
-    onChange = e =>{
+    onChange = e => {
         let value = e.target.value;
         let name = e.target.name;
         this.setState({
-            [name]:value
+            [name]: value
         })
 
     }
@@ -59,89 +51,85 @@ class Main extends React.Component {
 
 
     render() {
-        console.log(this.props.events)
         return (
-            <div>
-                <Head>
-                    <h1>Events</h1>
+            <Container textAlign='center'>
+                <Header as='h1'>
+                    Events
                     <div className='newButton'>
                         <Link className="add-event-link" to='/protected/new-event'> Add Event </Link>
                     </div>
-                </Head>
+                </Header>
                 <Route path='/protected/new-event' component={newEvent} />
-                <SelectContainer>
-                    <Select name= 'selectType' onChange = {this.onChange} value = {this.state.selectType}>
-                        <option value ='all'>All</option>
-                        <option value = 'birthday'>Birthday</option>
-                        <option value = 'wedding'>Wedding</option>
-                        <option value ='anniversary'>Anniversary</option>
-                        <option value = 'holiday'>Holiday</option>
-                        <option value = 'party'>Party</option>
-                    </Select>
-                </SelectContainer>
-                <CardContainer>
-                {this.FilteredEvents(this.props.events).length === 0 && 
-                    <Error>There are no upcoming {`${this.state.selectType}`.charAt(0).toUpperCase()+ `${this.state.selectType}`.slice(1)}s</Error>
-                }
+                <Menu vertical>
+                    <Dropdown item text='Select Type'>
+                        <Dropdown.Menu name='selectType' onChange={this.onChange} value={this.state.selectType}>
+                            <Dropdown.Item text='all'>All</Dropdown.Item>
+                            <Dropdown.Item text='birthday'>Birthday</Dropdown.Item>
+                            <Dropdown.Item text='wedding'>Wedding</Dropdown.Item>
+                            <Dropdown.Item text='anniversary'>Anniversary</Dropdown.Item>
+                            <Dropdown.Item text='holiday'>Holiday</Dropdown.Item>
+                            <Dropdown.Item text='party'>Party</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Menu>
+                <Card.Group itemsPerRow={4}>
+                    {this.FilteredEvents(this.props.events).length === 0 &&
+                        <Message error content={`There are no upcoming ${this.state.selectType}.charAt(0).toUpperCase()  ${this.state.selectType}.slice(1)}s`} />
+                    }
+
                     {this.FilteredEvents(this.props.events).map(event => {
                         if (this.state.editingEventId === event.id) {
                             return (
                                 <Card>
                                     <EditForm
                                         event={event}
-                                        editEvent={this.editEvent}
-                                        editingEvent={this.props.editingEvent}
-                                        closeEdit = {this.closeEdit}
+                                        closeEdit={this.closeEdit}
                                     />
                                 </Card>
                             );
                         }
-                        console.log(this.state.editingEventId)
+
                         return (
                             <Card>
-                                <h4>{event.event}</h4>
-                                <p>{event.date}</p>
-                                <p>{event.description}</p>
-                                <p>{event.messageDate}</p>
-                                <p>{event.message}</p>
-                                <i 
-                                    className="fas fa-pencil-alt" 
-                                    onClick = {() =>this.setState({ editingEventId: event.id})}
-                                    
-                                />
-                                <i
-                                    className="fas fa-times"
-                                    onClick={() => this.deleteEvent(event.id)}
-                                />
+                                <Card.Content>
+                                    <Card.Header>{event.event}</Card.Header>
+                                    <Card.Meta>{event.date}</Card.Meta>
+                                    <Divider />
+                                    <Card.Description>{event.description}</Card.Description>
+                                    <Card.Meta>{event.messageDate}</Card.Meta>
+                                    <Card.Description>{event.message}</Card.Description>
+                                </Card.Content>
+                                <Card.Content extra>
+                                    <Icon
+                                        name='pencil'
+                                        onClick={() => this.setState({ editingEventId: event.id })}
+
+                                    />
+                                    <Icon
+                                        name='times'
+                                        onClick={() => this.deleteEvent(event.id)}
+                                    />
+                                </Card.Content>
                             </Card>
                         )
                     })}
 
-                </CardContainer>
+                </Card.Group>
 
-            </div>
+            </Container>
         )
     }
 }
 
 const mapStateToProps = ({
     events,
-    deletingEvent,
-    editingEvent
+    deleteEvent,
 }) => ({
     events,
     deleteEvent,
-    editingEvent
 });
-
-// const mapStateToProps = state => {
-//     return {
-//         events: state.events,
-//         deletingEvent: state.deletingEvent
-//     };
-// }
 
 export default connect(
     mapStateToProps,
-    { deleteEvent, editEvent, getData}
+    { deleteEvent, getData }
 )(Main);
