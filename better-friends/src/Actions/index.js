@@ -5,15 +5,16 @@ export const GET_DATA_START = 'ADD_START';
 export const GET_DATA_SUCCESS = 'GET_DATA_SUCCESS';
 export const GET_DATA_FAIL = 'GET_DATA_FAIL';
 
-export const getData = () => dispatch => {
+const host = 'http://localhost:4000/'
+
+export const getData = (userid) => dispatch => {
     dispatch({ type: GET_DATA_START })
     axios
-        .get('***LINK****')
+        .get(`${host}reminders/${userid}`)
         .then(res => {
-            dispatch({ type: GET_DATA_START, payload: res.data })
+            dispatch({ type: GET_DATA_SUCCESS, payload: res.data })
         })
         .catch(err => {
-            console.log(err.response)
             dispatch({ type: GET_DATA_FAIL, payload: err.response })
         })
 }
@@ -23,16 +24,15 @@ export const ADD_START = 'ADD_START';
 export const ADD_SUCCESS = 'ADD_SUCCESS';
 export const ADD_FAIL = 'ADD_FAIL';
 
-export const addEvent = event => dispatch => {
+export const addEvent = (event) => dispatch => {
     dispatch({ type: ADD_START });
     return axios
-        .post('***LINK***', event)
+        .post(`${host}reminders`, event)
         .then(res => {
             dispatch({ type: ADD_SUCCESS, payload: res.data });
         })
         .catch(err => {
-            console.log(err.response);
-            dispatch({ type: ADD_FAIL, payload: err.response });
+            dispatch({ type: ADD_FAIL, payload: err.message });
         });
 }
 
@@ -43,19 +43,28 @@ export const RESET_EDIT = 'RESET_EDIT';
 
 export const editEvent = event => dispatch => {
     dispatch({ type: EDIT_START })
+    const newEvent = {
+        description: event.description,
+        message: event.message,
+        type: event.type,
+        date: event.date,
+        messagedate: event.messagedate
+
+    }
     return axios
-        .put('`***LINK***/${event.id}`', event)
+        .put(`${host}reminders/${event.id}`, newEvent)
         .then(res => {
-            dispatch({ type: ADD_SUCCESS, payload: res.data });
+            console.log('data: ', res.data)
+            dispatch({ type: EDIT_SUCCESS, payload: res.data });
         })
         .catch(err => {
             console.log(err.response);
-            dispatch({ type: ADD_FAIL, payload: err.response });
+            dispatch({ type: EDIT_FAIL, payload: err.response });
         });
 }
 
 export const resetEdit = () => dispatch => {
-    dispatch({type: RESET_EDIT})
+    dispatch({ type: RESET_EDIT })
 }
 
 
@@ -65,8 +74,8 @@ export const DELETE_FAIL = 'DELETE_FAIL';
 
 export const deleteEvent = id => dispatch => {
     dispatch({ type: DELETE_START });
-    axios // eslint-disable-next-line
-        .delete('`***LINK***/${id}`')
+    axios 
+        .delete(`${host}reminders/${id}`)
         .then(res => {
             dispatch({ type: DELETE_SUCCESS, payload: res.data });
         })
@@ -81,17 +90,27 @@ export const LOGIN_START = 'LOGIN_START';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 
-export const login = creds => dispatch => {
-    // dispatch({type: LOGIN_START})
-    // axios.post('***LINK***', creds)
-    // .then(res => {
-    //  localStorage.setItem('token', res.data)
-    //  dispatch({type: LOGIN_SUCCESS, payload: res.data })
-    // })
-    // .catch(err => {dispatch({type: LOGIN_FAIL, payload: err})})
-    dispatch({ type: LOGIN_SUCCESS });
+export const login = (creds) => dispatch => {
+    dispatch({ type: LOGIN_START })
+    axios.post(`${host}auth/login`, creds)
+        .then(res => {
+            localStorage.setItem('token', res.data.token)
+            dispatch({ type: LOGIN_SUCCESS, payload: res.data.user })
+        })
+        .catch(err => { dispatch({ type: LOGIN_FAIL, payload: err }) })
 }
 
+export const AUTO_LOGIN_START = 'LOGIN_START';
+export const AUTO_LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const AUTO_LOGIN_FAIL = 'LOGIN_FAIL';
+
+export const autoLogin = (stuff) => dispatch => {
+    dispatch({ type: AUTO_LOGIN_START })
+    // send token header from localstorage
+    axios.post(`${host}auth/login/auto`, stuff, { headers: { "Authorization": localStorage.getItem('token') } })
+        .then(res => dispatch({ type: AUTO_LOGIN_SUCCESS, payload: res.data }))
+        .catch(err => dispatch({ type: AUTO_LOGIN_FAIL, payload: err }))
+}
 
 export const REGISTER_START = 'REGISTER_START';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
