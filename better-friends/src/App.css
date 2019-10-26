@@ -27,3 +27,25 @@
   border-bottom: 1px solid rgba(34,36,38,.15) !important;
   border-radius: 0 !important;
 }
+.ui.cards {
+  justify-content: end !important;
+  text-align-last: center !important;
+}
+.ui.selection.dropdown{
+  min-width: 10em !important;
+  width: 100% !important;
+}
+.ui.four.cards>.card {
+  width: 14rem !important;
+}
+@media only screen and (min-width: 1200px) {
+  .ui.mini.modal {
+    width: 25rem !important;
+  }
+}
+.ui.inverted.menu {
+  background: #4b85d1 !important;
+  box-shadow: 5px 5px -5px 5px #2f5485 !important;
+}
+
+

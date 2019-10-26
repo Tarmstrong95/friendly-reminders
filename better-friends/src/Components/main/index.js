@@ -10,17 +10,15 @@ import { Header, Container, Dropdown, Card, Message, Icon, Divider, Label, Butto
 
 class Main extends React.Component {
     state = {
-        deletingEvent: null,
         editingEventId: null,
         selectType: 'All',
     };
 
-    // componentDidMount() {
-    //     this.props.getData();
-    // }
+    componentDidMount() {
+        this.props.getData(this.props.id);
+    }
 
     deleteEvent = id => {
-        this.setState({ deletingEventId: id })
         this.props.deleteEvent(id);
     };
 
@@ -56,12 +54,14 @@ class Main extends React.Component {
 
 
     render() {
+        console.log(this.props.events)
+
         const { selectType } = this.state
         return (
             <Container >
                 <Header as='h1'>
                     Events
-                    <NewEvent/>
+                    <NewEvent />
                 </Header>
                 <span>
                     <Dropdown
@@ -78,11 +78,11 @@ class Main extends React.Component {
                 </span>
                 <Divider />
                 <Card.Group itemsPerRow={4} className='baseline'>
-                    {this.FilteredEvents(this.props.events).length === 0 &&
+                    {!this.FilteredEvents(this.props.events) &&
                         <Message error content={`There are no upcoming ${this.state.selectType}s`} />
                     }
 
-                    {this.FilteredEvents(this.props.events).map(event => {
+                    {this.props.events && this.FilteredEvents(this.props.events).map(event => {
                         if (this.state.editingEventId === event.id) {
                             return (
                                 <Card>
@@ -106,8 +106,11 @@ class Main extends React.Component {
                                                     event.type === 'Holiday' ? 'blue' :
                                                         'olive'
                                     } />
-                                    <Card.Header>{event.event}</Card.Header>
-                                    <Card.Meta>{event.date}</Card.Meta>
+                                    <Card.Header>{event.description}</Card.Header>
+                                    <Card.Meta>{((date)=>{
+                                        const newDate = new Date(date)
+                                        return newDate.toDateString()
+                                    })(event.date)}</Card.Meta>
                                     <Divider />
                                     <Card.Description>{event.type}</Card.Description>
                                     <Card.Meta>{event.messageDate}</Card.Meta>
@@ -137,13 +140,12 @@ class Main extends React.Component {
     }
 }
 
-const mapStateToProps = ({
-    events,
-    deleteEvent,
-}) => ({
-    events,
-    deleteEvent,
-});
+const mapStateToProps = state => {
+    return {
+        events: state.events,
+        id: state.user.id
+    }
+};
 
 export default connect(
     mapStateToProps,

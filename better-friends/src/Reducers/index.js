@@ -2,137 +2,68 @@ import {
     ADD_START,
     ADD_SUCCESS,// eslint-disable-next-line
     ADD_FAIL,
+
     GET_DATA_START,
     GET_DATA_SUCCESS,// eslint-disable-next-line
     GET_DATA_FAIL,
+
     LOGIN_START,
     LOGIN_SUCCESS,// eslint-disable-next-line
     LOGIN_FAIL,
-    REGISTER_START,
-    REGISTER_SUCCESS,// eslint-disable-next-line
-    REGISTER_FAIL,
-    EDIT_START,
-    EDIT_SUCCESS,
+
     LOGOUT_START,
     LOGOUT_SUCCESS,
     LOGOUT_FAIL,
+
+    AUTO_LOGIN_START,
+    AUTO_LOGIN_SUCCESS,
+    AUTO_LOGIN_FAIL,
+
+    REGISTER_START,
+    REGISTER_SUCCESS,// eslint-disable-next-line
+    REGISTER_FAIL,
+
+    EDIT_START,
+    EDIT_SUCCESS,
     EDIT_FAIL,
+
+    DELETE_START,
+    DELETE_SUCCESS,
+    DELETE_FAIL,
+
     RESET_EDIT
 
 } from '../Actions';
 
 const initialState = {
     addingEvent: false,
+
     addingData: false,
+    events: null,
+    getDataFail: null,
+
     editingEvent: false,
     editingEventSuccess: false,
     editingEventFail: false,
-    events: [
-        {
-            event: 'Toms Birthday',
-            date: '01/20/94',
-            type: 'Birthday',
-            messageDate: '01/19/19',
-            message: 'Happy Birthday',
-            id: 1,
-        },
-        {
-            event: 'Test Wedding',
-            date: 'testdate2',
-            type: 'Wedding',
-            messageDate: 'testmsgdate2',
-            message: 'testmsg2',
-            id: 2,
-        },
-        {
-            event: 'Test Holiday',
-            date: 'testdate2',
-            type: 'Anniversary',
-            messageDate: 'testmsgdate2',
-            message: 'testmsg2',
-            id: 3,
-        },
-        {
-            event: 'Test Anniversary',
-            date: 'testdate2',
-            type: 'Holiday',
-            messageDate: 'testmsgdate2',
-            message: 'testmsg2',
-            id: 4,
-        },
-        {
-            event: 'Toms Birthday',
-            date: '01/20/94',
-            type: 'Birthday',
-            messageDate: '01/19/19',
-            message: 'Happy Birthday',
-            id: 5,
-        },
-        {
-            event: 'Test Wedding',
-            date: 'testdate2',
-            type: 'Wedding',
-            messageDate: 'testmsgdate2',
-            message: 'testmsg2',
-            id: 6,
-        },
-        {
-            event: 'Test Holiday',
-            date: 'testdate2',
-            type: 'Anniversary',
-            messageDate: 'testmsgdate2',
-            message: 'testmsg2',
-            id: 7,
-        },
-        {
-            event: 'Test Anniversary',
-            date: 'testdate2',
-            type: 'Holiday',
-            messageDate: 'testmsgdate2',
-            message: 'testmsg2',
-            id: 8,
-        },
-        {
-            event: 'Toms Birthday',
-            date: '01/20/94',
-            type: 'Birthday',
-            messageDate: '01/19/19',
-            message: 'Happy Birthday',
-            id: 9,
-        },
-        {
-            event: 'Test Wedding',
-            date: 'testdate2',
-            type: 'Wedding',
-            messageDate: 'testmsgdate2',
-            message: 'testmsg2',
-            id: 10,
-        },
-        {
-            event: 'Test Holiday',
-            date: 'testdate2',
-            type: 'Anniversary',
-            messageDate: 'testmsgdate2',
-            message: 'testmsg2',
-            id: 11,
-        },
-        {
-            event: 'Test Anniversary',
-            date: 'testdate2',
-            type: 'Holiday',
-            messageDate: 'testmsgdate2',
-            message: 'testmsg2',
-            id: 12,
-        },
-    ],
     error: '',
+
     loggingIn: false,
     isLoggedIn: false,
-    token: '39f7gb5sug63983nf84bf73odnggt739d'
+    loginFail: null,
+
+    deletingEvent: false,
+    deletingEventErorr: false,
+
+    user: {
+        username: null,
+        id: null,
+        firstname: null,
+        lastname: null,
+        email: null,
+    }
 };
 
 const reducer = (state = initialState, action) => {
-    console.log(action);
     switch (action.type) {
         case ADD_START:
             return ({
@@ -145,8 +76,9 @@ const reducer = (state = initialState, action) => {
                 addingEvent: true,
                 error: '',
                 events: [
-                    ...state.events,
                     action.payload,
+                    ...state.events,
+
                 ]
             });
 
@@ -158,13 +90,21 @@ const reducer = (state = initialState, action) => {
         case GET_DATA_SUCCESS:
             return ({
                 ...state,
-                addingData: false
-                //update state data here
+                addingData: false,
+                events: action.payload
             });
+        case GET_DATA_FAIL:
+            return {
+                ...state,
+                addingData: false,
+                getDataFail: action.payload
+            }
         case EDIT_START:
             return {
                 ...state,
-                editingEvent: true
+                editingEvent: true,
+                editingEventSuccess: false,
+                editingEventFail: false
             };
         case EDIT_SUCCESS:
             return {
@@ -181,13 +121,14 @@ const reducer = (state = initialState, action) => {
                 editingEventFail: true,
                 error: action.payload
             }
-            case RESET_EDIT: 
+        case RESET_EDIT:
             return {
-                ...state, 
+                ...state,
                 editingEvent: false,
                 editingEventFail: false,
                 editingEventSuccess: false
             }
+
 
         case LOGIN_START:
             return ({
@@ -198,11 +139,21 @@ const reducer = (state = initialState, action) => {
             return ({
                 ...state,
                 loggingIn: false,
-                isLoggedIn: true
+                isLoggedIn: true,
+                user: { ...action.payload }
             });
+        case LOGIN_FAIL:
+            return {
+                ...state,
+                loggingIn: false,
+                loginError: action.payload
+            }
+
 
         case REGISTER_START:
-            return ({});
+            return ({
+
+            });
         case REGISTER_SUCCESS:
             return ({
                 ...state,
@@ -213,6 +164,43 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 isLoggedIn: false
             });
+
+        case AUTO_LOGIN_START:
+            return {
+                ...state,
+                loggingIn: true
+            }
+        case AUTO_LOGIN_SUCCESS:
+            return {
+                ...state,
+                loggingIn: false,
+                user: action.payload
+            }
+        case AUTO_LOGIN_FAIL:
+            return {
+                ...state,
+                loggingIn: false,
+                loginError: action.payload
+            }
+        case DELETE_START:
+            return {
+                ...state,
+                deletingEvent: true
+            }
+        case DELETE_SUCCESS:
+            return {
+                ...state,
+                deletingEvent: false,
+                events: (events => {
+                    return events.filter(event => event.id !== action.payload)
+                })(state.events)
+            }
+        case DELETE_FAIL:
+            return {
+                ...state,
+                deletingEvent:false,
+                deletingEventErorr: action.payload
+            }
 
         default:
             return state;

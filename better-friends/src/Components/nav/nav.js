@@ -1,7 +1,7 @@
 import React from 'react'
 import { Menu, Input } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { login, logout } from '../../Actions/index'
+import { logout } from '../../Actions/index'
 import {Link} from 'react-router-dom'
 
 class Navig extends React.Component {
@@ -11,9 +11,6 @@ class Navig extends React.Component {
 
 
     render() {
-        if (localStorage.getItem("token")) {
-            this.props.login();
-        }
         const { activeItem } = this.state
 
         return (
@@ -38,7 +35,7 @@ class Navig extends React.Component {
                         name='logout'
                         active={activeItem === 'logout'}
                         onClick={this.props.logout}
-                        href='/cred/login'
+                        href='/login'
                     />}
                     {this.props.isLoggedIn && <Menu.Item
                         name={localStorage.getItem('firstname')}
@@ -54,4 +51,4 @@ const mapStateToProps = state => {
         isLoggedIn: state.isLoggedIn
     }
 }
-export default connect(mapStateToProps, { login, logout })(Navig);
+export default connect(mapStateToProps, { logout })(Navig);
