@@ -1,12 +1,12 @@
 import React from 'react';
 import { login } from '../../Actions/index';
-import {connect} from 'react-redux';
-import {Form} from 'semantic-ui-react'
+import { connect } from 'react-redux';
+import { Form } from 'semantic-ui-react'
 import history from '../../history/history'
 class Login extends React.Component {
     state = {
-        un: '',//username
-        pw: ''//password
+        username: '',//username
+        password: ''//password
     }
 
 
@@ -19,26 +19,19 @@ class Login extends React.Component {
 
     submit = (e) => {
         e.preventDefault();
-        if (localStorage.getItem('username') !== '' && localStorage.getItem('password') !== '' && localStorage.getItem('username') === this.state.un && localStorage.getItem('password') === this.state.pw) {
-           localStorage.setItem("token", this.props.token)
-            this.props.login()
-            history.push('/protected')
-        }else{
-            alert('INCORRECT CREDENTIALS!')
-        }
-
+        this.props.login(this.state)
         this.setState({
-            un: '',
-            pw: ''
+            username: '',
+            password: ''
         })
     }
 
     render() {
         return (
-            <Form>
-                <Form.Input name="un" onChange={this.handleChanges} value={this.state.un} placeholder="username" />
-                <Form.Input name="pw" onChange={this.handleChanges} value={this.state.pw} placeholder="password" />
-                <Form.Button onClick={this.submit}>Login</Form.Button>
+            <Form onSubmit={this.submit}>
+                <Form.Input name="username" onChange={this.handleChanges} value={this.state.username} placeholder="username" />
+                <Form.Input name="password" onChange={this.handleChanges} value={this.state.password} placeholder="password" />
+                <Form.Button >Login</Form.Button>
             </Form>
         )
     }
@@ -50,4 +43,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {login})(Login);
+export default connect(mapStateToProps, { login })(Login);
