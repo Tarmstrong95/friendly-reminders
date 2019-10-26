@@ -22,34 +22,35 @@ class EditForm extends React.Component {
         type: `${value ? eventOptions[value].text : 'Please select a type'}`
     })
 
-    editEvent = e => {
-        this.props.editEvent(e, this.state.event)
+    editEvent = () => {
+        console.log('event: ', this.state.event)
+        this.props.editEvent(this.state.event)
     }
 
     closeEdit = () => {
         this.props.closeEdit();
     }
     componentDidMount = () => {
-        const { event, message, type, date, id, messageDate } = this.state.event
+        const { description, message, type, date, id, messagedate } = this.state.event
         this.setState({
-            event: { event, message, type, date, id, messageDate }
+            event: { description, message, type, date, id, messagedate }
         })
     }
 
 
 
     render() {
-        const { event, message, type, date, id, messageDate, value } = this.state.event
+        const { description, message, type, date, messagedate, value } = this.state.event
         const { editingEvent, editingEventFail, editingEventSuccess, closeEdit, resetEdit } = this.props
         return (
             <Card>
                 <Card.Content textAlign='left'>
                     <Label attached='top' color={
-                        event.type ===
+                        type.type ===
                             'Birthday' ? 'red' :
-                            event.type === 'Wedding' ? 'pink' :
-                                event.type === 'Anniversary' ? 'violet' :
-                                    event.type === 'Holiday' ? 'blue' :
+                            type.type === 'Wedding' ? 'pink' :
+                                type.type === 'Anniversary' ? 'violet' :
+                                    type.type === 'Holiday' ? 'blue' :
                                         'grey'
                     } />
                     <Form>
@@ -57,9 +58,9 @@ class EditForm extends React.Component {
                             <Input
                                 transparent
                                 type='text'
-                                name='event'
-                                placeholder='Event'
-                                value={event}
+                                name='description'
+                                placeholder='Description'
+                                value={description}
                                 onChange={this.handleChanges}
                             />
                             <Divider />
@@ -90,9 +91,9 @@ class EditForm extends React.Component {
                         <Card.Meta>
                             <Input
                                 type='text'
-                                name='messageDate'
+                                name='messagedate'
                                 placeholder='Send Date'
-                                value={messageDate}
+                                value={messagedate}
                                 onChange={this.handleChanges}
                                 transparent
                             />
