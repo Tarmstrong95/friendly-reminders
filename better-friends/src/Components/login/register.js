@@ -23,11 +23,6 @@ class Register extends React.Component {
 
     submit = (e) => {
         e.preventDefault();
-        localStorage.setItem('username', this.state.un)
-        localStorage.setItem('password', this.state.pw)
-        localStorage.setItem('firstname', this.state.fn)
-        localStorage.setItem('phonenumber', this.state.pn)
-        localStorage.setItem('token', this.props.token)
         this.props.register();
         this.props.history.push('/protected')
         this.setState({
@@ -52,7 +47,7 @@ class Register extends React.Component {
         )
         }
         return(
-            <Redirect to="/cred/login" />
+            <Redirect to="/login" />
         )
     }
 }
