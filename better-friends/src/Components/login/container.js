@@ -2,9 +2,15 @@ import React from 'react';
 import Login from './login';
 import Register from './register';
 import { Segment, Grid, Divider, Header } from 'semantic-ui-react';
+import {connect} from 'react-redux';
+import {withRouter, Redirect} from 'react-router-dom';
 
 const Container = props => {
 
+    if(window.location.pathname === '/login' && 
+    props.isLoggedIn){
+        return <Redirect to='/protected' />
+    }
     return (
 
         <Segment className='noborder'>
@@ -23,4 +29,9 @@ const Container = props => {
     )
 }
 
-export default Container; 
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: state.isLoggedIn
+    }
+}
+export default withRouter(connect(mapStateToProps, {})(Container)); 
