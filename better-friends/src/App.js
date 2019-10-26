@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { Route, Link } from 'react-router-dom';
 import 'semantic-ui-css/semantic.min.css'
 import Navig from './Components/nav/nav';
+import {autoLogin} from './Actions/index'
 
 
 
@@ -14,13 +15,19 @@ import Navig from './Components/nav/nav';
 
 class App extends React.Component {
 
+componentDidMount(){
+  const token = localStorage.getItem('token')
+  if(token){
+    this.props.autoLogin()
+  }
+}
+
   render() {
     return (
       <div >
         <Navig />
-        <Route path='/cred' render={props => <Container {...props} loggedin={props.isLoggedIn} />} />
+        <Route path='/login' render={props => <Container {...props} loggedin={props.isLoggedIn} />} />
         <PrivateRoute path='/protected' component={Main} />
-        {/* switch to Route to view page*/}
       </div>
     );
   }
@@ -32,4 +39,4 @@ const mapStateToProps = state => {
     isLoggedIn: state.isLoggedIn
   }
 }
-export default connect(mapStateToProps, {})(App);
+export default connect(mapStateToProps, {autoLogin})(App);
