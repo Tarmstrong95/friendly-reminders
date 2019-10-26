@@ -7,10 +7,9 @@ import DatePicker from 'react-date-picker';
 
 class NewEvent extends React.Component {
     state = {
-        event: '',
         date: '',
         description: '',
-        messageDate: '',
+        messagedate: '',
         message: '',
         type: 'Select a type'
     }
@@ -18,28 +17,18 @@ class NewEvent extends React.Component {
     handleChanges = e => {
         let value = e.target.value;
         this.setState({
-            newEvent: {
                 ...this.state.new,
                 [e.target.name]: value
-            }
         });
     };
 
     handleDropdown = (e, { value }) => this.setState({ ...this.state, type: `${options[value].text}` })
-    onChange = date => this.setState({ ...this.state, messageDate: date })
+    onChangeDate = date => this.setState({ ...this.state, date })
+    onChangeMessDate = date => this.setState({ ...this.state, messagedate: date })
 
     addEvent = e => {
         e.preventDefault();
-        this.props.addEvent(this.state)
-        this.setState({
-            new: {
-                event: '',
-                date: '',
-                description: '',
-                messageDate: '',
-                message: ''
-            }
-        });
+        this.props.addEvent({...this.state, user: this.props.userid})
     };
 
 
@@ -56,45 +45,53 @@ class NewEvent extends React.Component {
                         size='mini'
                         onClick={this.showAdd}
                     />}>
-                    <Modal.Header>Add an event</Modal.Header>
+                    <Modal.Header>Add an reminder</Modal.Header>
                     <Modal.Content>
                         <Form>
 
                             <Form.Field>
-                                <Label size='tiny'>What would you like to title this event?</Label>
-                                <Input name='event' placeholder='Title' />
+                                <Input 
+                                name='description' 
+                                placeholder='Title' 
+                                onChange={this.handleChanges}
+                                />
+                            </Form.Field>
+
+                            <Form.Field inline>
+                                <Label pointing='right' basic color='red' size='tiny'>Date of event</Label>
+                                <DatePicker 
+                                name='date' 
+                                onChange={this.onChangeDate} 
+                                value={this.state.date} />
                             </Form.Field>
 
                             <Form.Field>
-                                <Label size='tiny'>When is the event date?</Label>
-                                <Input name='date' placeholder='Event Date' />
-                            </Form.Field>
-
-                            <Form.Field>
-                                <Label size='tiny'>What type of event is this?</Label>
                                 <div>
                                     <Dropdown
                                         text={this.state.type}
                                         options={options}
                                         scrolling
+                                        value={this.state.value}
                                         onChange={this.handleDropdown}
                                     />
                                 </div>
                             </Form.Field>
 
-                            <Form.Field>
-                                <Label size='tiny'>When would you like the message to be sent?</Label>
-                                <div>
-                                    <DatePicker onChange={this.onChange} value={this.state.messageDate} 
-                                    
-                                    />
-                                </div>
-
+                            <Form.Field inline>
+                                <Label pointing='right' basic color='red' size='tiny'>Date to send</Label>
+                                <DatePicker 
+                                name='messagedate' 
+                                onChange={this.onChangeMessDate} 
+                                value={this.state.messagedate} />
                             </Form.Field>
 
                             <Form.Field>
-                                <Label size='tiny'>Say something nice!</Label>
-                                <TextArea name='message' placeholder='Message' />
+                                <TextArea 
+                                name='message' 
+                                placeholder='Message' 
+                                value={this.state.message}
+                                onChange={this.handleChanges}
+                                />
                             </Form.Field>
 
                             <Button content='Save' onClick={this.addEvent} />
@@ -108,5 +105,11 @@ class NewEvent extends React.Component {
 }
 
 
+const mapStateToProps = state => {
+    return {
+        userid: state.user.id
+    }
+}
 
-export default connect(null, { addEvent })(NewEvent);
+
+export default connect(mapStateToProps, { addEvent })(NewEvent);
