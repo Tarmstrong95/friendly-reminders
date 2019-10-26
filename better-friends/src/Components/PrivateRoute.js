@@ -1,17 +1,17 @@
 import React from 'react';
 // eslint-disable-next-line
-import { Route, Redirect, withRouter } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ component: Component, isLoggedIn, ...rest}) => {
     return (
         <Route
             {...rest}
             render= {props => {
-                if (localStorage.getItem('token')) {
+                if (isLoggedIn) {
                     return <Component {...props} />;
                 } else {
-                    return <Redirect to = '/cred/login' />;
+                    return <Redirect to = '/login' />;
                 }
             }}
         />
@@ -19,13 +19,11 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 };
 
 const mapStateToProps = state => ({
-    // return {
-    //     token : state.token once we have a token
-    //}
+    isLoggedIn: state.isLoggedIn
 });
 
-export default (connect(
+export default connect(
     mapStateToProps,
     {}
 )(PrivateRoute)
-);
+;
