@@ -1,6 +1,6 @@
 [build]
-base = "portfolio/"
-publish = "/portfolio/build/"
+base = "better-friends/"
+publish = "/better-friends/build/"
 command = "yarn build"
 [[redirects]]
 from = "/*"
