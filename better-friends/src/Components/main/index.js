@@ -77,7 +77,7 @@ class Main extends React.Component {
                     />
                 </span>
                 <Divider />
-                {(this.props.events && this.props.events.length) &&
+                {(this.props.events && this.props.events.length>0) &&
                 <Card.Group itemsPerRow={4} className='baseline'>
                     {!this.FilteredEvents(this.props.events) &&
                         <Message error content={`There are no upcoming ${this.state.selectType}s`} />
