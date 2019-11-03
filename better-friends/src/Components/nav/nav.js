@@ -40,6 +40,10 @@ class Navig extends React.Component {
                     {this.props.isLoggedIn && <Menu.Item
                         name={localStorage.getItem('firstname')}
                     />}
+                    {!this.props.isLoggedIn && <Menu.Item
+                    name='Login'
+                    href='/login'
+                    />}
                 </Menu.Menu>
             </Menu>
         )
