@@ -4,36 +4,56 @@ import { addEvent } from '../../Actions';
 import { Form, Button, Header, Container, Dropdown, Modal, Label, Input, TextArea } from 'semantic-ui-react';
 import { filters as options } from './index'
 import DatePicker from 'react-date-picker';
+import './index.css'
 
 class NewEvent extends React.Component {
     state = {
         date: '',
+        dm: '',
+        dd: '',
+        dy: '',
         description: '',
         messagedate: '',
+        m: '',
+        d: '',
+        y: '',
         message: '',
-        type: 'Select a type'
+        type: 'Select a type',
+        email: ''
     }
 
     handleChanges = e => {
         let value = e.target.value;
         this.setState({
-                ...this.state.new,
-                [e.target.name]: value
+            ...this.state,
+            [e.target.name]: value
         });
     };
 
     handleDropdown = (e, { value }) => this.setState({ ...this.state, type: `${options[value].text}` })
-    onChangeDate = date => this.setState({ ...this.state, date })
-    onChangeMessDate = date => this.setState({ ...this.state, messagedate: date })
 
     addEvent = e => {
+        const { email, description, message, type } = this.state,
+            date = new Date(this.state.dy, this.state.dm - 1, this.state.dd),
+            messagedate = new Date(this.state.y, this.state.m - 1, this.state.d)
+
         e.preventDefault();
-        this.props.addEvent({...this.state, user: this.props.userid})
+
+        this.props.addEvent({
+            date: date.toDateString(),
+            description,
+            message,
+            email,
+            type,
+            messagedate: messagedate.toDateString(),
+            user: this.props.userid
+        })
     };
 
 
 
     render() {
+        console.log(this.state)
         return (
             <div>
                 <Modal
@@ -50,19 +70,44 @@ class NewEvent extends React.Component {
                         <Form>
 
                             <Form.Field>
-                                <Input 
-                                name='description' 
-                                placeholder='Title' 
-                                onChange={this.handleChanges}
+                                <Input
+                                    name='description'
+                                    placeholder='Title'
+                                    onChange={this.handleChanges}
                                 />
                             </Form.Field>
 
                             <Form.Field inline>
-                                <Label pointing='right' basic color='red' size='tiny'>Date of event</Label>
-                                <DatePicker 
-                                name='date' 
-                                onChange={this.onChangeDate} 
-                                value={this.state.date} />
+                                <form className='dateForm'>{'Event: '}
+                                    <input
+                                        name='dm'
+                                        placeholder='MM'
+                                        type='number'
+                                        min='1' max='12'
+                                        className='dateInput'
+                                        value={this.state.dm}
+                                        onChange={this.handleChanges}
+                                    />{'/'}
+                                    <input
+                                        name='dd'
+                                        placeholder='DD'
+                                        type='number'
+                                        min='1' max='31'
+                                        className='dateInput'
+                                        value={this.state.dd}
+                                        onChange={this.handleChanges}
+                                    />{'/'}
+                                    <input
+                                        name='dy'
+                                        placeholder='YYYY'
+                                        type='text'
+                                        minLength='4'
+                                        maxLength='4'
+                                        className='dateInput maxfour'
+                                        value={this.state.dy}
+                                        onChange={this.handleChanges}
+                                    />
+                                </form>
                             </Form.Field>
 
                             <Form.Field>
@@ -78,19 +123,54 @@ class NewEvent extends React.Component {
                             </Form.Field>
 
                             <Form.Field inline>
-                                <Label pointing='right' basic color='red' size='tiny'>Date to send</Label>
-                                <DatePicker 
-                                name='messagedate' 
-                                onChange={this.onChangeMessDate} 
-                                value={this.state.messagedate} />
+                                <form className='dateForm'>{'Send: '}
+                                    <input
+                                        name='m'
+                                        placeholder='MM'
+                                        type='number'
+                                        min='1' max='12'
+                                        className='dateInput'
+                                        value={this.state.m}
+                                        onChange={this.handleChanges}
+                                    />{'/'}
+                                    <input
+                                        name='d'
+                                        placeholder='DD'
+                                        type='number'
+                                        min='1' max='31'
+                                        className='dateInput'
+                                        value={this.state.d}
+                                        onChange={this.handleChanges}
+                                    />{'/'}
+                                    <input
+                                        name='y'
+                                        placeholder='YYYY'
+                                        type='text'
+                                        minLength='4'
+                                        maxLength='4'
+                                        className='dateInput maxfour'
+                                        value={this.state.y}
+                                        onChange={this.handleChanges}
+                                    />
+                                </form>
                             </Form.Field>
 
                             <Form.Field>
-                                <TextArea 
-                                name='message' 
-                                placeholder='Message' 
-                                value={this.state.message}
+                                <Input
+                                name='email'
+                                placeholder='Email of ricipient'
+                                type='email'
+                                value={this.state.email}
                                 onChange={this.handleChanges}
+                                />
+                            </Form.Field>
+
+                            <Form.Field>
+                                <TextArea
+                                    name='message'
+                                    placeholder='Message'
+                                    value={this.state.message}
+                                    onChange={this.handleChanges}
                                 />
                             </Form.Field>
 
