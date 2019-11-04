@@ -77,12 +77,13 @@ class Main extends React.Component {
                     />
                 </span>
                 <Divider />
+                {(this.props.events && this.props.events.length>0) &&
                 <Card.Group itemsPerRow={4} className='baseline'>
                     {!this.FilteredEvents(this.props.events) &&
                         <Message error content={`There are no upcoming ${this.state.selectType}s`} />
                     }
 
-                    {this.props.events && this.FilteredEvents(this.props.events).map(event => {
+                    {this.FilteredEvents(this.props.events).map(event => {
                         if (this.state.editingEventId === event.id) {
                             return (
                                 <Card>
@@ -134,7 +135,14 @@ class Main extends React.Component {
                     })}
 
                 </Card.Group>
-
+}
+{
+    (!this.props.events || !this.props.events.length) && 
+    <Label
+    content='Try creating an event!'
+    color='red'
+    />
+}
             </Container>
         )
     }

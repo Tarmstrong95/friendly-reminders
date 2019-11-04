@@ -11,9 +11,7 @@ import {
     LOGIN_SUCCESS,// eslint-disable-next-line
     LOGIN_FAIL,
 
-    LOGOUT_START,
     LOGOUT_SUCCESS,
-    LOGOUT_FAIL,
 
     AUTO_LOGIN_START,
     AUTO_LOGIN_SUCCESS,
@@ -78,7 +76,6 @@ const reducer = (state = initialState, action) => {
                 events: [
                     action.payload,
                     ...state.events,
-
                 ]
             });
 
@@ -151,14 +148,22 @@ const reducer = (state = initialState, action) => {
 
 
         case REGISTER_START:
-            return ({
-
-            });
+            return {
+                ...state,
+                isRegistering: true,
+            }
         case REGISTER_SUCCESS:
             return ({
                 ...state,
-                isLoggedIn: true
+                isRegistering: false,
+                registered: true,
             });
+        case REGISTER_FAIL:
+            return {
+                ...state,
+                isRegistering: false,
+                registerError: action.payload
+            }
         case LOGOUT_SUCCESS:
             return ({
                 ...state,
@@ -198,7 +203,7 @@ const reducer = (state = initialState, action) => {
         case DELETE_FAIL:
             return {
                 ...state,
-                deletingEvent:false,
+                deletingEvent: false,
                 deletingEventErorr: action.payload
             }
 

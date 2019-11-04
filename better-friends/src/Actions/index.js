@@ -117,15 +117,12 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
 
 export const register = creds => dispatch => {
-    // dispatch({ type: REGISTER_START })
-    // axios.put('***LINK***', creds)
-    //     .then(res => {
-    //         localStorage.setItem('token', res.data)
-    //         dispatch({ type: REGISTER_SUCCESS, payload: res.data })
-    //     })
-    //     .catch(err => { dispatch({ type: REGISTER_FAIL, payload: err }) })
-
-    dispatch({ type: REGISTER_SUCCESS })
+    dispatch({ type: REGISTER_START })
+    axios.put(`${host}auth/register`, creds)
+        .then(res => {
+            dispatch({ type: REGISTER_SUCCESS, payload: res.data })
+        })
+        .catch(err => dispatch({ type: REGISTER_FAIL, payload: err.message }))
 }
 
 export const LOGOUT_START = 'LOGOUT_START';

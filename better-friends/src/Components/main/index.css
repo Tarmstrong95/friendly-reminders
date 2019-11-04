@@ -1,0 +1,11 @@
+.dateInput{
+    text-align: center;
+    width: 20% !important;
+}
+.dateForm{
+    display: flex;
+    justify-content: center;
+}
+.maxfour{
+    width: 25%;
+}
