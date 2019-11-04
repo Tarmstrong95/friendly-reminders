@@ -1,7 +1,3 @@
-[build]
-base = "better-friends/"
-publish = "/better-friends/build/"
-command = "yarn build"
 [[redirects]]
 from = "/*"
 to = "/index.html"
